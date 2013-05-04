@@ -25,8 +25,8 @@ void *memcpy(void *dst, const void *src, size_t n)
 #else*/
   /*@
      loop invariant 0 <= n <= \at(n,Pre);
-     loop invariant p == src+(\at(n, Pre) - n);
-     loop invariant q == dst+(\at(n, Pre) - n);
+     loop invariant p == ((char*)src)+(\at(n, Pre) - n);
+     loop invariant q == ((char*)dst)+(\at(n, Pre) - n);
      loop invariant (char*)dst <= q <= (char*)dst+\at(n,Pre);
      loop invariant (char*)src <= p <= (char*)src+\at(n,Pre);
      loop invariant \forall integer i; 0 <= i < (\at(n, Pre) - n) ==> ((char*)dst)[i] == ((char*)src)[i];
