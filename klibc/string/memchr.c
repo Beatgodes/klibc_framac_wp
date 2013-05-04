@@ -29,6 +29,7 @@ void *memchr(const void *s, int c, size_t n)
 	const /*unsigned*/ char *sp = s;
 
 	/*@
+		loop invariant \base_addr(sp) == \base_addr(s);
 		loop invariant (char*)s <= sp <= ((char*)s) + \at(n, Pre);
 		loop invariant sp == ((char*)s) + (\at(n, Pre) - n);
 		loop invariant 0 <= n <= \at(n, Pre);
@@ -37,8 +38,10 @@ void *memchr(const void *s, int c, size_t n)
 		loop variant n;
 	@*/
 	while (n/*n--*/) {
-		if (*sp == (/*unsigned*/ char)c)
+		if (*sp == (/*unsigned*/ char)c){
+			//@ assert *sp == (char)c;
 			return (void *)sp;
+		}
 		sp++;
 
 		n--; // inserted code

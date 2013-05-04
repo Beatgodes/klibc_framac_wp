@@ -99,20 +99,7 @@ __extern void *memcpy(void *dst, const void *src, size_t n);
 
 __extern void bzero(void*, size_t);
 
-// commented unsigned
-__extern int strcmp(const char *, const char *);
-
-
-
-//beat: forced to change code
-__extern void memswap(void *, void *, size_t);
-
-//teddy: tudo a funcionar com cvc3
-__extern int memcmp(const void *, const void *, size_t);
-
-__extern char *strchr(const char *, int);
-
-// commented unsigned
+// changed code, commented unsigned
 __extern int memcmp(const void *, const void *, size_t);
 
 // commented unsigned, changed code
@@ -121,10 +108,23 @@ __extern void *memrchr(const void *, int, size_t);
 // tudo a funcionar com alt-ergo
 __extern size_t strnlen(const char *, size_t);
 
+
+/*******************************************************
+ ********** 100% BUT BROKEN WITH FLUORINE **************
+ *******************************************************/
+
+// commented unsigned
+__extern int strcmp(const char *, const char *);
+
+//beat: forced to change code
+__extern void memswap(void *, void *, size_t);
+
+__extern char *strchr(const char *, int);
+
 /*******************************************************
  *************** BASTANTE ADIANTADO ********************
  *******************************************************/
-//Beat: não se pode avançar sem 1o acabar o memcmp
+// beat: suffers from bug from fluorine
 __extern void *memmem(const /*void*/ char *, /*size_t*/ int, const /*void*/ char *, /*size_t*/ int);
 
 //beat: não prova os behaviors..
@@ -139,7 +139,7 @@ __extern void *memccpy(void *, const void *, int, size_t);
 __extern void *memchr(const void *, int, size_t);
 
 // beat: commented unsigned, changed code
-// mt parecido ao memcmp.. mas nao passa os testes
+// must cover all cases of strings
 __extern int strncmp(const char *, const char *, size_t);
 
 
@@ -147,9 +147,11 @@ __extern int strncmp(const char *, const char *, size_t);
 __extern void *memmove(void *, const void *, size_t);
 
 // beat: falha num behavior..acho que o axioma toupper precisa duma afinadela.
+// crashes in fluorine
 __extern int strcasecmp(const char *, const char *);
 
 // beat: combinação do strcasecmp e strncmp.. falta cenas
+// crashes in fluorine
 __extern int strncasecmp(const char *, const char *, size_t);
 
 /*******************************************************

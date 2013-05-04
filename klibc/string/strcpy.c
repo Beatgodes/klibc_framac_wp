@@ -6,42 +6,42 @@
 
 #include <string.h>
 
-
 /*@
-    requires \exists integer i; Length_of_str_is(src, i) &&
-                                \valid(src+(0..i)) && \valid(dst+(0..i)) &&
-                                \separated(src+(0..i), dst+(0..i));
-    assigns dst[0..Length(src)];
-    ensures \result == dst;
-    ensures \exists integer i; (Length_of_str_is(src,i) && Length_of_str_is(dst,i)) &&
-            (\forall integer k; 0 <= k <= i ==> src[i] == dst[i]);
-  @*/
+	requires \exists integer i; 0 <= i <= 20000 && Length_of_str_is(src, i);
+	requires \valid(dst+(0..Length(src)));
+	requires \separated(src+(0..Length(src)), dst+(0..Length(src)));
+	assigns dst[0..Length(src)];
+	ensures \exists integer i; 0 <= i && Length_of_str_is(src,i) && Length_of_str_is(dst,i);
+	ensures \forall integer i; 0 <= i <= Length(src) ==> dst[i] == src[i];
+	ensures \result == dst;
+@*/
 char *strcpy(char *dst, const char *src)
 {
-  char *q = dst;
-  const char *p = src;
-  char ch;
+	char *q = dst;
+	const char *p = src;
+	char ch;
 
-    /*@
-        loop invariant inv1: dst <= q <= dst+(p-src); // done
-        loop invariant inv2: src <= p <= src+(q-dst); // done
-        loop invariant inv3: q == dst+(p-src); // done
-        loop invariant inv4: p == src+(q-dst); // done
-        // e necessario?
-        loop invariant inv5: q == \at(dst,Pre) + (q - \at(dst,Pre)); // done
-        loop invariant src-p <= 0; // done
 
-        loop invariant inv6: \forall integer k; 0 <= k < (q-dst) ==> src[k] == dst[k]; // so estabelecido
-        loop invariant inv7: \forall integer k; 0 <= k < (p-src) ==> dst[k] != 0; // so com cvc3
-        // useless.. ?
-        loop invariant inv8: \forall integer i; (p-src) <= i < Length(src) ==> dst[i] == \at(dst,Pre)[i]; // done
-        loop assigns ch, q, p, dst[0..(p-src)-1]; // done
-        loop variant Length(src) - (p-src);
-      @*/
   //do {
-  while(ch)
-      *q++ = ch = *p++;
+
+ 	/*@
+		loop invariant \base_addr(q) == \base_addr(dst);
+		loop invariant \base_addr(p) == \base_addr(src);
+		loop invariant dst <= q <= dst + Length(src);
+		loop invariant src <= p <= src + Length(src);
+		loop invariant q == dst + (p - src);
+		loop invariant p == src + (q - dst);
+		loop invariant \forall integer i; 0 <= i < (p - src) ==> dst[i] == src[i];
+		loop invariant \forall integer i; 0 <= i < (p - src) ==> src[i] != 0;
+		loop assigns ch, p, q, dst[0..(p-src)-1];
+		loop variant Length(src) - (p - src);
+
+	@*/
+	while(ch)
+		*q++ = ch = *p++;
+
+
   //} while (ch);
 
-  return dst;
+	return dst;
 }

@@ -38,6 +38,7 @@ char *strchr(const char *s, int c)
     s++;
   }
 
+  //@ assert *s == c;
   return (char *)s;
 }
 

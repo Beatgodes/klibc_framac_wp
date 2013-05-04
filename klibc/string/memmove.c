@@ -34,6 +34,8 @@ void *memmove(void *dst, const void *src, size_t n)
 */
 	if (q < p) {
 		/*@
+			loop invariant \base_addr(p) == \base_addr(src);
+			loop invariant \base_addr(q) == \base_addr(dst);
 			loop invariant q < p;
 			loop invariant 0 <= n <= \at(n, Pre);
 			loop invariant p == ((char*)src)+(\at(n, Pre) - n);
@@ -54,16 +56,18 @@ void *memmove(void *dst, const void *src, size_t n)
 		q += n;
 
 		/*@
-		loop invariant q >= p;
-		loop invariant 0 <= n <= \at(n, Pre);
-		loop invariant p == ((char*)src) + n;
-		loop invariant q == ((char*)dst) + n;
-		loop invariant (char*)src <= p <= (char*)src+\at(n, Pre);
-		loop invariant (char*)dst <= q <= (char*)dst+\at(n, Pre);
-		loop invariant \forall integer i; n <= i < \at(n, Pre) ==> ((char*)dst)[i] == \at(((char*)src)[i], Pre);
-		loop invariant \forall integer i; 0 <= i < n ==> ((char*)dst)[i] == \at(((char*)dst)[i], Pre);
-		loop assigns p, q, n, ((char*)dst)[n..(\at(n, Pre)-1)];
-		loop variant n;
+			loop invariant \base_addr(p) == \base_addr(src);
+			loop invariant \base_addr(q) == \base_addr(dst);
+			loop invariant q >= p;
+			loop invariant 0 <= n <= \at(n, Pre);
+			loop invariant p == ((char*)src) + n;
+			loop invariant q == ((char*)dst) + n;
+			loop invariant (char*)src <= p <= (char*)src+\at(n, Pre);
+			loop invariant (char*)dst <= q <= (char*)dst+\at(n, Pre);
+			loop invariant \forall integer i; n <= i < \at(n, Pre) ==> ((char*)dst)[i] == \at(((char*)src)[i], Pre);
+			loop invariant \forall integer i; 0 <= i < n ==> ((char*)dst)[i] == \at(((char*)dst)[i], Pre);
+			loop assigns p, q, n, ((char*)dst)[n..(\at(n, Pre)-1)];
+			loop variant n;
 		@*/
 		while (/*n--*/n) {
 			*--q = *--p;

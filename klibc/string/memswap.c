@@ -24,6 +24,8 @@ void memswap(void *m1, void *m2, size_t n)
 	char tmp;
 
 	/*@
+		loop invariant \base_addr(p) == \base_addr(m1);
+		loop invariant \base_addr(q) == \base_addr(m2);
 		loop invariant 0 <= n <= \at(n, Pre);
 		loop invariant p == m1+(\at(n, Pre) - n);
 		loop invariant q == m2+(\at(n, Pre) - n);

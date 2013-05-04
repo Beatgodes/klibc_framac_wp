@@ -10,14 +10,14 @@
    assigns \nothing;
 
    behavior contains:
-     assumes \exists integer i; 0 <= i <= Length(s) && s[i] == (char)c;
-     ensures \exists integer i; 0 <= i <= Length(s) && s[i] == (char)c 
-      && (\forall integer j; i < j <= Length(s) ==> s[j] != (char)c)
+     assumes \exists integer i; 0 <= i < Length(s) && s[i] == (char)c;
+     ensures \exists integer i; 0 <= i < Length(s) && s[i] == (char)c 
+      && (\forall integer j; i < j < Length(s) ==> s[j] != (char)c)
       && \result == s+i;
      ensures *\result == (char)c;
 
    behavior not_contains:
-     assumes \forall integer i; 0 <= i <= Length(s) ==> s[i] != (char)c;
+     assumes \forall integer i; 0 <= i < Length(s) ==> s[i] != (char)c;
      ensures \result == \null;
 
    complete behaviors;
