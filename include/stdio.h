@@ -47,14 +47,25 @@ enum _IO_bufmode {
  */
 __extern FILE *stdin, *stdout, *stderr;
 
+
+/*******************************************************
+ ***************** 100% ********************************
+ *******************************************************/
+
+__extern int fileno(FILE *);
+
 /*******************************************************
  ***************** VISTOS ******************************
  *******************************************************/
 
-
+// beat: does not rpove ensures
 __extern int ferror(FILE * );
+
+// beat: does not prove ensures
 __extern int feof(FILE *);
-__extern int fileno(FILE *);
+
+
+
 __extern void clearerr(FILE *);
 
 

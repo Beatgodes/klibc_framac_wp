@@ -4,6 +4,12 @@
 
 #include "stdioint.h"
 
+/*@
+	requires valid_IO_file_pvt(f);
+	assigns f->ibytes, f->pub._IO_error, f->pub._IO_eof, f->obytes;
+	ensures \result >= -1;
+
+@*/
 int __fflush(struct _IO_file_pvt *f)
 {
 	ssize_t rv;
@@ -16,7 +22,19 @@ int __fflush(struct _IO_file_pvt *f)
 	if (__unlikely(f->ibytes))
 		return fseek(&f->pub, 0, SEEK_CUR);
 
+	//@ assert \valid(f->buf+(0..(f->bufsiz+32-1)));
 	p = f->buf;
+	//@ assert \valid(f->buf+(0..(f->bufsiz+32-1)));
+	//@ assert \valid(p+(0..(f->bufsiz+32-1)));
+	//@ assert 0 <= f->obytes < f->bufsiz;
+
+	/*@
+		loop invariant 0 <= f->obytes;
+		loop invariant rv >= -1;
+		loop invariant errno == EINTR || errno == EAGAIN;
+		loop assigns f->obytes, p, f->pub._IO_eof, f->pub._IO_error, rv;
+		loop variant f->obytes;
+	@*/
 	while (f->obytes) {
 		rv = write(f->pub._IO_fileno, p, f->obytes);
 		if (rv == -1) {
@@ -37,6 +55,9 @@ int __fflush(struct _IO_file_pvt *f)
 	return 0;
 }
 
+/*@
+	requires valid_IO_file_pvt(stdio_pvt(file));
+@*/
 int fflush(FILE *file)
 {
 	struct _IO_file_pvt *f;

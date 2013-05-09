@@ -11,7 +11,7 @@
 #include <sys/syscall.h>
 #include <bitsize.h>
 
-#if _BITSIZE == 32
+//#if _BITSIZE == 32
 
 // syscall
 
@@ -20,6 +20,7 @@
 	requires whence == SEEK_SET || whence == SEEK_CUR || whence == SEEK_END;
 	requires \valid(res);
 	assigns \nothing;
+	ensures *res >= 0;
 	ensures \result == 0 || \result > 0;
 @*/
 extern int __llseek(int fd, unsigned long hi, unsigned long lo, off_t * res,
@@ -30,7 +31,6 @@ extern int __llseek(int fd, unsigned long hi, unsigned long lo, off_t * res,
 	requires whence == SEEK_SET || whence == SEEK_CUR || whence == SEEK_END;
 	assigns \nothing;
 	ensures \result == -1 || \result >= 0;
-
 @*/
 off_t lseek(int fd, off_t offset, int whence)
 {
@@ -44,4 +44,4 @@ off_t lseek(int fd, off_t offset, int whence)
 	return rv ? (off_t)-1 : result;
 }
 
-#endif
+//#endif

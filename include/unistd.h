@@ -103,6 +103,7 @@ __extern int open_cloexec(const char *, int, mode_t);
 
 /*@
 	requires fildes >= 0;
+	assigns \nothing;
 	ensures \result == 0 || \result == -1;
 @*/
 __extern int close(int fildes); //used syscall
@@ -116,7 +117,8 @@ __extern off_t lseek(int, off_t, int);
 
 /*@
 	requires fildes >= 0;
-	assigns ((char*)buf)[0..nbyte];
+	requires \valid(((char*)buf)+(0..nbyte-1));
+	assigns ((char*)buf)[0..nbyte-1];
 	ensures \result == 0 || \result == -1 || \result > 0; // separated just for clarification, this should be 3 behaviors. EOF, error and read.
 @*/
 __extern ssize_t read(int fildes, void *buf, size_t nbyte); // used syscall
@@ -124,6 +126,7 @@ __extern ssize_t read(int fildes, void *buf, size_t nbyte); // used syscall
 
 /*@
 	requires fildes >= 0;
+	requires \valid(((char*)buf)+(0..nbyte-1));
 	assigns \nothing; // something from fildes perhaps?
 	ensures -1 <= \result <= nbyte;
 @*/

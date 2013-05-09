@@ -18,14 +18,25 @@ struct _IO_file_pvt __stdio_headnode =
 /*@
 	requires mode == \null || \exists integer i; Length_of_str_is(mode, i);
 	requires fd >= 0;
+	requires \valid(&__stdio_headnode);
+	requires \valid(&(__stdio_headnode.prev));
+	requires \valid(&(__stdio_headnode.next));
 	assigns \nothing;
-	//ensures \fresh{Old, Here}(stdio_pvt(\result), size_of_pvt(stdio_pvt(\result))); // fresh not implemented
-	ensures \result != \null ==> valid_IO_file_pvt(stdio_pvt(\result));
-	ensures \result == \null || \result == &(stdio_pvt(\result)->pub);
-	ensures \result != \null ==> \result->_IO_fileno == fd;
-	ensures \result != \null ==> valid_IO_file_pvt(stdio_pvt(\result)->next);
-	ensures \result != \null ==> valid_IO_file_pvt(stdio_pvt(\result)->prev);
-	ensures stdio_pvt(\result)->bufmode == _IOLBF || stdio_pvt(\result)->bufmode == _IOFBF;
+	
+	behavior err:
+		ensures \result == NULL;
+
+	behavior ok:
+		ensures valid_FILE(\result);
+		ensures valid_IO_file_pvt(stdio_pvt(\result));
+		ensures \result == &(stdio_pvt(\result)->pub);
+		ensures \result->_IO_fileno == fd;
+		//ensures valid_IO_file_pvt(stdio_pvt(\result)->next);
+		//ensures valid_IO_file_pvt(stdio_pvt(\result)->prev);
+		ensures stdio_pvt(\result)->bufmode == _IOLBF || stdio_pvt(\result)->bufmode == _IOFBF;
+
+	complete behaviors;	
+
 @*/
 FILE *fdopen(int fd, const char *mode)
 {
