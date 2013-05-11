@@ -27,7 +27,6 @@ struct _IO_file_pvt __stdio_headnode =
 		ensures \result == NULL;
 
 	behavior ok:
-		ensures valid_FILE(\result);
 		ensures valid_IO_file_pvt(stdio_pvt(\result));
 		ensures \result == &(stdio_pvt(\result)->pub);
 		ensures \result->_IO_fileno == fd;
