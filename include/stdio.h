@@ -58,22 +58,40 @@ __extern int fseek(FILE *, off_t, int);
 
 __extern off_t lseek(int, off_t, int);
 
+__extern int ferror(FILE * );
+
+__extern int feof(FILE *);
+
+__extern void clearerr(FILE *);
+
 /*******************************************************
  ***************** VISTOS ******************************
  *******************************************************/
 
-// beat: does not rpove ensures
-__extern int ferror(FILE * );
+/*
+	Milestone 3:
 
-// beat: does not prove ensures
-__extern int feof(FILE *);
+	Nova versão:
+		Fluorine traz consigo um novo modelo de memória com a opção unsafe casts, permitindo-nos avançar.
+		Surgem problemas com funções anteriormente verificadas.
+
+	Problemas com malloc:
+		Não conseguimos garantir o \seperated em funções que usam malloc.
+		Faz falta a função built-in 'fresh'.
+
+	Limitações nos behavrios:
+		Normalmente quando um programa pode ter diversos comportamentos, conseguimos codifica-los tendo em conta certos factores (assumes)
+		No entanto, nas funções que usam systemcalls não conseguimos fazer isso pois o factor está invisivel para o programador
+
+	Propagações no assigns:
+		Podia facilitarnos a vida uma funcionalidade que fazia a propagação dos assigns. Isto é, se temos uma função que não altera nada
+		mas esta função por sua vez chama outra que altera algo, temos que indicar isso no assigns da função chamadora. Isto é muito 
+		contra-produtivo quando há funções mutuamente recursivos e quando mete assigns dentro de behaviors ao barulho.
 
 
+*/
 
-__extern void clearerr(FILE *);
-
-
-// beat: initial approach done
+// beat: cannot guarantee on some stuff becuase of allocation problems
 __extern FILE *fdopen(int, const char *);
 
 // beat: initial approach done
@@ -81,6 +99,12 @@ __extern int ungetc(int, FILE *);
 
 // beat: initial approach done
 __extern off_t ftell(FILE *__f);
+
+// beat: inital approach done
+__extern int fflush(FILE *);
+
+// beat: initial approach done
+__extern void rewind(FILE *);
 
 /*******************************************************
  ***************** RESTO *******************************
@@ -93,8 +117,7 @@ __extern FILE *fopen(const char *, const char *);
 // depende de fflsuh, close
 __extern int fclose(FILE *);
 
-// depende de fseek
-__extern void rewind(FILE *);
+
 
 // depende de _fwrite
 __extern int fputs(const char *, FILE *);
@@ -119,9 +142,6 @@ __extern size_t _fread(void *, size_t, FILE *);
 
 // depende de __flush
 __extern size_t _fwrite(const void *, size_t, FILE *);
-
-// depende de write, fseek
-__extern int fflush(FILE *);
 
 // depende de _fread
 __extern size_t fread(void *, size_t, size_t, FILE *);
@@ -163,12 +183,6 @@ __extern_inline int feof(FILE *__f)
 	return __f->_IO_eof;
 }
 
-/*@
-	requires valid_FILE(__f);
-	assigns __f->_IO_error, __f->_IO_eof;
-	ensures __f->_IO_error == 0;
-	ensures __f->_IO_eof == 0;
-@*/
 __extern_inline void clearerr(FILE *__f)
 {
 	__f->_IO_error = 0;
