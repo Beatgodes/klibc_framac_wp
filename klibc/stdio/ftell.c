@@ -1,5 +1,10 @@
 #include "stdioint.h"
 
+/*@
+	requires file == &(stdio_pvt(file)->pub);
+	requires valid_IO_file_pvt(stdio_pvt(file));
+	assigns \nothing;
+@*/
 off_t ftell(FILE *file)
 {
 	struct _IO_file_pvt *f = stdio_pvt(file);

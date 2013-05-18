@@ -54,6 +54,10 @@ __extern FILE *stdin, *stdout, *stderr;
 
 __extern int fileno(FILE *);
 
+__extern int fseek(FILE *, off_t, int);
+
+__extern off_t lseek(int, off_t, int);
+
 /*******************************************************
  ***************** VISTOS ******************************
  *******************************************************/
@@ -75,9 +79,8 @@ __extern FILE *fdopen(int, const char *);
 // beat: initial approach done
 __extern int ungetc(int, FILE *);
 
-// depende de __flflush, lseek
 // beat: initial approach done
-__extern int fseek(FILE *, off_t, int);
+__extern off_t ftell(FILE *__f);
 
 /*******************************************************
  ***************** RESTO *******************************
@@ -126,8 +129,7 @@ __extern size_t fread(void *, size_t, size_t, FILE *);
 // depende de _fwrite
 __extern size_t fwrite(const void *, size_t, size_t, FILE *);
 
-// depende de lseek
-__extern off_t ftell(FILE *__f);
+
 
 
 

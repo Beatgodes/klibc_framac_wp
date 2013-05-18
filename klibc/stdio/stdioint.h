@@ -32,12 +32,13 @@ struct _IO_file_pvt {
 	predicate valid_IO_file_pvt_norec(struct _IO_file_pvt *f) = 
 			   \valid(f)
 			&& f->bufsiz == 16384								// _KLIBC_BUFSIZ == _KLIBC_MALLOC_CHUNK_SIZE/4 == 65536/4
-			&& 0 <= f->ibytes <= f->bufsiz
-			&& 0 <= f->obytes <= f->bufsiz
+			&& 0 <= f->ibytes < f->bufsiz
+			&& 0 <= f->obytes < f->bufsiz
 			&& valid_FILE(&(f->pub))							// call to valid FILE struct
 			&& \separated(f, f->next, f->prev, f->buf+(0..(f->bufsiz+32-1)))
-			&& (f->next == NULL || \valid(f->next))
-			&& (f->prev == NULL || \valid(f->prev))
+			&& f->buf <= f->data < f->buf + f->bufsiz + 32
+			&& (f->next != NULL ==> (\valid(f->next)))
+			&& (f->prev != NULL ==> (\valid(f->next)))
 			&& \valid(f->buf+(0..(f->bufsiz+32-1)))				// buffer is valid in defined size + unget_slop
 	;
 
@@ -49,6 +50,7 @@ struct _IO_file_pvt {
 			&& 0 <= f->obytes < f->bufsiz
 			&& valid_FILE(&(f->pub))							// call to valid FILE struct
 			&& \separated(f, f->next, f->prev, f->buf+(0..(f->bufsiz+32-1)))
+			&& f->buf <= f->data < f->buf + f->bufsiz + 32
 			&& (f->next != NULL ==> (valid_IO_file_pvt_norec(f->next) && f->next->prev == f))
 			&& (f->prev != NULL ==> (valid_IO_file_pvt_norec(f->prev) && f->prev->next == f))
 			&& \valid(f->buf+(0..(f->bufsiz+32-1)))				// buffer is valid in defined size + unget_slop

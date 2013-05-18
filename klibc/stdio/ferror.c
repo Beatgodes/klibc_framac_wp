@@ -4,7 +4,7 @@
 /*@
 	requires valid_FILE(__f);
 	assigns \nothing;
-	ensures \result == __f->_IO_error;
+	ensures \result == (int)(__f->_IO_error);
 @*/
 int ferror(FILE *__f)
 {

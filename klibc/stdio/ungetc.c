@@ -5,8 +5,6 @@
 #include "stdioint.h"
 
 /*@
-	requires file != \null;
-	requires \valid(file);
 	requires file == &(stdio_pvt(file)->pub);
 	requires valid_IO_file_pvt(stdio_pvt(file));
 	requires -128 <= c <= 127;
@@ -35,6 +33,8 @@ int ungetc(int c, FILE *file)
 		return EOF;
 
 	*(--f->data) = c;
+	//@ assert f->data == \at(f->data, Pre) -1;
 	f->ibytes++;
+	//@ assert f->ibytes == \at(f->ibytes, Pre) + 1;
 	return c;
 }
