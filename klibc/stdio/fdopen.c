@@ -82,6 +82,13 @@ err:
 	return NULL;
 }
 
+/*@
+	assigns stdin, stdout, stderr, stdio_pvt(stderr)->bufmode;
+	ensures stdin->_IO_fileno == 0;
+	ensures stdout->_IO_fileno == 1;
+	ensures stderr->_IO_fileno == 2;
+	ensures stdio_pvt(stderr)->bufmode == _IONBF;
+@*/
 void __init_stdio(void)
 {
 	stdin  = fdopen(0, NULL);

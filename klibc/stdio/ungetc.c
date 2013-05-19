@@ -17,8 +17,8 @@
 	behavior success:
 		assumes stdio_pvt(file)->obytes == 0 && stdio_pvt(file)->data > stdio_pvt(file)->buf;
 		assigns stdio_pvt(file)->ibytes, stdio_pvt(file)->data, *(\at(stdio_pvt(file)->data, Pre)-1); 
-		ensures \at(stdio_pvt(file)->ibytes, Here) == \at(stdio_pvt(file)->ibytes, Pre) + 1;
-		ensures \at(stdio_pvt(file)->data, Here) == \at(stdio_pvt(file)->data, Pre) -1;
+		ensures stdio_pvt(file)->ibytes == \at(stdio_pvt(file)->ibytes, Pre) + 1;
+		ensures stdio_pvt(file)->data == \at(stdio_pvt(file)->data, Pre) -1;
 		ensures *(stdio_pvt(file)->data) == c;
 		ensures \result == c;
 

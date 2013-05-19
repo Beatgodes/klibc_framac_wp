@@ -5,14 +5,10 @@
 #include "stdioint.h"
 
 /*@
- requires file != \null;
- requires valid_IO_file_pvt(stdio_pvt(file));
-
- // fflush assigns something..
- assigns stdio_pvt(file)->next->prev, stdio_pvt(file)->prev->next;
- 
- ensures \result == 0 || \result -1; // depends of close syscall, maybe create 2 behaviors here?
- // como dizer que f esta free'd?
+	requires file == &(stdio_pvt(file)->pub);
+	requires valid_IO_file_pvt(stdio_pvt(file));
+	assigns stdio_pvt(file)->next->prev, stdio_pvt(file)->prev->next;
+ 	ensures \result == 0 || \result -1;
  @*/
 int fclose(FILE *file)
 {

@@ -64,6 +64,18 @@ __extern int feof(FILE *);
 
 __extern void clearerr(FILE *);
 
+
+/*******************************************************
+ ***************** 100% WITOUTH DEPS *******************
+ *******************************************************/
+
+/* 
+	Dedicado a funções que dão 100% sem verificar os filhos.
+	Por ex, fclose depende de fflush, mas simplesente não inclui o fflush.c ao verificar
+*/
+
+__extern int fclose(FILE *);
+
 /*******************************************************
  ***************** VISTOS ******************************
  *******************************************************/
@@ -110,27 +122,22 @@ __extern void rewind(FILE *);
 // depende de _fread
 __extern int fgetc(FILE *);
 
+// beat: seems to be working. parse open mode fails on variant
+__extern FILE *fopen(const char *, const char *);
+
+// depende de fgetc
+// beat initial approach done
+__extern char *fgets(char *, int, FILE *);
 
 /*******************************************************
  ***************** RESTO *******************************
  *******************************************************/
-
-
-// depende de fdopen, open e close
-__extern FILE *fopen(const char *, const char *);
-
-// depende de fflsuh, close
-__extern int fclose(FILE *);
 
 // depende de _fwrite
 __extern int fputs(const char *, FILE *);
 
 // depende de _fwrite
 __extern int fputc(int, FILE *);
-
-
-// depende de fgetc
-__extern char *fgets(char *, int, FILE *);
 
 // depende de vfprintf
 __extern int fprintf(FILE *, const char *, ...);
@@ -143,6 +150,12 @@ __extern size_t _fread(void *, size_t, FILE *);
 
 // depende de __flush
 __extern size_t _fwrite(const void *, size_t, FILE *);
+
+/*******************************************************
+ ***************** inlines *****************************
+ *******************************************************/
+
+
 
 // depende de _fread
 __extern size_t fread(void *, size_t, size_t, FILE *);

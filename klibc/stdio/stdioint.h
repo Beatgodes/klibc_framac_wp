@@ -41,8 +41,8 @@ struct _IO_file_pvt {
 			&& f == stdio_pvt(&(f->pub))
 			&& \separated(f, f->next, f->prev, f->buf+(0..(f->bufsiz+32-1)))
 			&& f->buf <= f->data < f->buf + f->bufsiz + 32
-			&& (f->next != \null ==> (\valid(f->next)))
-			&& (f->prev != \null ==> (\valid(f->next)))
+			&& \valid(f->next)
+			&& \valid(f->prev)
 			&& \valid(f->buf+(0..(f->bufsiz+32-1)))				// buffer is valid in defined size + unget_slop
 	;
 
@@ -55,8 +55,8 @@ struct _IO_file_pvt {
 			&& valid_FILE(&(f->pub))							// call to valid FILE struct
 			&& \separated(f, f->next, f->prev, f->buf+(0..(f->bufsiz+32-1)))
 			&& f->buf <= f->data < f->buf + f->bufsiz + 32
-			&& (f->next != \null ==> (valid_IO_file_pvt_norec(f->next) && f->next->prev == f))
-			&& (f->prev != \null ==> (valid_IO_file_pvt_norec(f->prev) && f->prev->next == f))
+			&& valid_IO_file_pvt_norec(f->next) && f->next->prev == f
+			&& valid_IO_file_pvt_norec(f->prev) && f->prev->next == f
 			&& \valid(f->buf+(0..(f->bufsiz+32-1)))				// buffer is valid in defined size + unget_slop
 	;
 

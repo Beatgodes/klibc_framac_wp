@@ -6,7 +6,7 @@
 
 /*@
 	requires valid_IO_file_pvt(f);
-	assigns f->ibytes, f->pub._IO_eof, f->pub._IO_error, f->obytes;
+	assigns f->ibytes, f->pub._IO_eof, f->pub._IO_error, f->obytes, errno;
 	ensures \result >= -1;
 
 @*/
@@ -61,7 +61,7 @@ int __fflush(struct _IO_file_pvt *f)
 /*@
 	requires file == &(stdio_pvt(file)->pub);
 	requires valid_IO_file_pvt(stdio_pvt(file));
-	assigns stdio_pvt(file)->ibytes, stdio_pvt(file)->pub._IO_eof, stdio_pvt(file)->pub._IO_error, stdio_pvt(file)->obytes;
+	assigns stdio_pvt(file)->ibytes, stdio_pvt(file)->pub._IO_eof, stdio_pvt(file)->pub._IO_error, stdio_pvt(file)->obytes, errno;
 @*/
 int fflush(FILE *file)
 {
@@ -73,6 +73,11 @@ int fflush(FILE *file)
 	} else {
 		int err = 0;
 
+		/*@
+			loop invariant valid_IO_file_pvt(f);
+			loop invariant f != &__stdio_headnode;
+			loop assigns f, err;
+		*/
 		for (f = __stdio_headnode.next;
 		     f != &__stdio_headnode;
 		     f = f->next) {
