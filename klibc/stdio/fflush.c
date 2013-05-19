@@ -1,4 +1,4 @@
-l/*
+/*
  * fflush.c
  */
 
@@ -6,7 +6,7 @@ l/*
 
 /*@
 	requires valid_IO_file_pvt(f);
-	assigns f->ibytes, f->pub._IO_error, f->pub._IO_eof, f->obytes;
+	assigns f->ibytes, f->pub._IO_eof, f->pub._IO_error, f->obytes;
 	ensures \result >= -1;
 
 @*/
@@ -28,11 +28,14 @@ int __fflush(struct _IO_file_pvt *f)
 	//@ assert \valid(p+(0..(f->bufsiz+32-1)));
 	//@ assert 0 <= f->obytes < f->bufsiz;
 
+	rv = -1; // inserted code
 	/*@
 		loop invariant 0 <= f->obytes;
-		loop invariant rv >= -1;
-		loop invariant errno == EINTR || errno == EAGAIN;
-		loop assigns f->obytes, p, f->pub._IO_eof, f->pub._IO_error, rv;
+		loop invariant \base_addr(p) == \base_addr(f->buf);
+		loop invariant -1 <= rv <= f->obytes;
+		loop invariant f->buf <= p < f->buf + f->bufsiz + 32;
+		loop invariant \valid(p+(0..f->obytes-1));
+		loop assigns f->obytes, p, f->pub._IO_eof, f->pub._IO_error, rv, errno;
 		loop variant f->obytes;
 	@*/
 	while (f->obytes) {
@@ -56,7 +59,9 @@ int __fflush(struct _IO_file_pvt *f)
 }
 
 /*@
+	requires file == &(stdio_pvt(file)->pub);
 	requires valid_IO_file_pvt(stdio_pvt(file));
+	assigns stdio_pvt(file)->ibytes, stdio_pvt(file)->pub._IO_eof, stdio_pvt(file)->pub._IO_error, stdio_pvt(file)->obytes;
 @*/
 int fflush(FILE *file)
 {

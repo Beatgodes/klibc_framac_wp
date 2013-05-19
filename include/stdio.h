@@ -106,6 +106,11 @@ __extern int fflush(FILE *);
 // beat: initial approach done
 __extern void rewind(FILE *);
 
+// teddy: inital approach done
+// depende de _fread
+__extern int fgetc(FILE *);
+
+
 /*******************************************************
  ***************** RESTO *******************************
  *******************************************************/
@@ -117,16 +122,12 @@ __extern FILE *fopen(const char *, const char *);
 // depende de fflsuh, close
 __extern int fclose(FILE *);
 
-
-
 // depende de _fwrite
 __extern int fputs(const char *, FILE *);
 
 // depende de _fwrite
 __extern int fputc(int, FILE *);
 
-// depende de _fread
-__extern int fgetc(FILE *);
 
 // depende de fgetc
 __extern char *fgets(char *, int, FILE *);

@@ -5,6 +5,7 @@
 #include "stdioint.h"
 
 /*@
+	requires file == &(stdio_pvt(file)->pub);
 	requires valid_IO_file_pvt(stdio_pvt(file));
 	requires whence == SEEK_SET || whence == SEEK_CUR || whence == SEEK_END;
 	requires where >= 0;
@@ -17,6 +18,8 @@ __extern int fseek(FILE *file, off_t where, int whence)
 {
 	struct _IO_file_pvt *f = stdio_pvt(file);
 	off_t rv;
+	//@ assert file == &(stdio_pvt(file)->pub);
+	//@ assert &(f->pub) == file; 
 
 	if (f->obytes)
 		if (__fflush(f))

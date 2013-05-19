@@ -26,6 +26,9 @@ struct _IO_file_pvt {
 	enum _IO_bufmode bufmode; /* Type of buffering */
 };
 
+#define stdio_pvt(x) container_of(x, struct _IO_file_pvt, pub)
+
+
 /*@
 
 
@@ -35,10 +38,11 @@ struct _IO_file_pvt {
 			&& 0 <= f->ibytes < f->bufsiz
 			&& 0 <= f->obytes < f->bufsiz
 			&& valid_FILE(&(f->pub))							// call to valid FILE struct
+			&& f == stdio_pvt(&(f->pub))
 			&& \separated(f, f->next, f->prev, f->buf+(0..(f->bufsiz+32-1)))
 			&& f->buf <= f->data < f->buf + f->bufsiz + 32
-			&& (f->next != NULL ==> (\valid(f->next)))
-			&& (f->prev != NULL ==> (\valid(f->next)))
+			&& (f->next != \null ==> (\valid(f->next)))
+			&& (f->prev != \null ==> (\valid(f->next)))
 			&& \valid(f->buf+(0..(f->bufsiz+32-1)))				// buffer is valid in defined size + unget_slop
 	;
 
@@ -51,8 +55,8 @@ struct _IO_file_pvt {
 			&& valid_FILE(&(f->pub))							// call to valid FILE struct
 			&& \separated(f, f->next, f->prev, f->buf+(0..(f->bufsiz+32-1)))
 			&& f->buf <= f->data < f->buf + f->bufsiz + 32
-			&& (f->next != NULL ==> (valid_IO_file_pvt_norec(f->next) && f->next->prev == f))
-			&& (f->prev != NULL ==> (valid_IO_file_pvt_norec(f->prev) && f->prev->next == f))
+			&& (f->next != \null ==> (valid_IO_file_pvt_norec(f->next) && f->next->prev == f))
+			&& (f->prev != \null ==> (valid_IO_file_pvt_norec(f->prev) && f->prev->next == f))
 			&& \valid(f->buf+(0..(f->bufsiz+32-1)))				// buffer is valid in defined size + unget_slop
 	;
 
@@ -60,7 +64,6 @@ struct _IO_file_pvt {
 
 @*/
 
-#define stdio_pvt(x) container_of(x, struct _IO_file_pvt, pub)
 
 enum _IO_file_flags {
 	_IO_FILE_FLAG_WRITE	=  1, /* Buffer has write data */
