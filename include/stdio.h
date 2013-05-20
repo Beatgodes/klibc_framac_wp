@@ -107,6 +107,7 @@ __extern int fclose(FILE *);
 __extern FILE *fdopen(int, const char *);
 
 // beat: initial approach done
+// teddy: fails on 1 rte assertion
 __extern int ungetc(int, FILE *);
 
 // beat: initial approach done
