@@ -21,13 +21,12 @@ struct _IO_file_pvt __stdio_headnode =
 	requires \valid(&__stdio_headnode);
 	requires \valid(&(__stdio_headnode.prev));
 	requires \valid(&(__stdio_headnode.next));
-	assigns __stdio_headnode.next;
+	assigns errno, __stdio_headnode.next;
 	ensures \result != \null ==> valid_IO_file_pvt(stdio_pvt(\result));
 	ensures \result != \null ==> \result == &(stdio_pvt(\result)->pub);
 	ensures \result != \null ==> \result->_IO_fileno == fd;
 	ensures \result != \null ==> stdio_pvt(\result)->bufmode == _IOLBF || stdio_pvt(\result)->bufmode == _IOFBF;
-
-
+	ensures \result == \null ==> errno == ENOMEM;
 @*/
 FILE *fdopen(int fd, const char *mode)
 {
@@ -43,6 +42,7 @@ FILE *fdopen(int fd, const char *mode)
 		goto err;
 	//@ assert \valid(f);
 	//@ assert \valid(f+(0..bufoffs+BUFSIZ+_IO_UNGET_SLOP-1));
+	//@ assert \forall integer i; 0 <= i < (bufoffs + BUFSIZ + _IO_UNGET_SLOP) ==> \valid(f+i);
 
 	// start constructing a valid io_file_pvt
 	f->data = f->buf = (char *)f + bufoffs;
@@ -52,13 +52,14 @@ FILE *fdopen(int fd, const char *mode)
 	f->pub._IO_fileno = fd;
 	//@ assert \valid(&(f->pub));
 	//@ assert (f->pub)._IO_fileno >= 0;
-	//@assert (f->pub)._IO_fileno == fd;
+	//@ assert (f->pub)._IO_fileno == fd;
 
 	f->bufsiz = BUFSIZ;
 	//@ assert f->bufsiz == BUFSIZ;
 	//@ assert f->bufsiz == 16384;
 	f->bufmode = isatty(fd) ? _IOLBF : _IOFBF;
 
+	//@ assert f->bufmode == _IOLBF || f->bufmode == _IOFBF; // useless?
 	/* Insert into linked list */
 	f->prev = &__stdio_headnode;
 	f->next = __stdio_headnode.next;
@@ -68,9 +69,13 @@ FILE *fdopen(int fd, const char *mode)
 	//@ assert 0 <= f->ibytes < f->bufsiz;
 	//@ assert 0 <= f->obytes < f->bufsiz;
 	//@ assert \separated(f, f->next, f->prev, f->buf+(0..(f->bufsiz+32-1)));
+	//@ assert \separated(f, &__stdio_headnode);
+
+	//@ assert valid_IO_file_pvt_norec(f->next) && f->next->prev == f;
+	//@ assert valid_IO_file_pvt_norec(f->prev) && f->prev->next == f;
+	// f->next e f->prev alguma vez ficam a NULL?
 	//@ assert (f->next != NULL ==> (valid_IO_file_pvt_norec(f->next) && f->next->prev == f));
 	//@ assert (f->prev != NULL ==> (valid_IO_file_pvt_norec(f->prev) && f->prev->next == f));
-
 
 
 	return &f->pub;
@@ -84,6 +89,7 @@ err:
 
 /*@
 	assigns stdin, stdout, stderr, stdio_pvt(stderr)->bufmode;
+	ensures valid_FILE(stdin) && valid_FILE(stdout) && valid_FILE(stderr);
 	ensures stdin->_IO_fileno == 0;
 	ensures stdout->_IO_fileno == 1;
 	ensures stderr->_IO_fileno == 2;

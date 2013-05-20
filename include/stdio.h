@@ -122,7 +122,7 @@ __extern void rewind(FILE *);
 // depende de _fread
 __extern int fgetc(FILE *);
 
-// beat: seems to be working. parse open mode fails on variant
+// beat: seems to be working
 __extern FILE *fopen(const char *, const char *);
 
 // depende de fgetc
