@@ -157,10 +157,8 @@ __extern size_t _fwrite(const void *, size_t, FILE *);
 
 
 
-// depende de _fread
 __extern size_t fread(void *, size_t, size_t, FILE *);
 
-// depende de _fwrite
 __extern size_t fwrite(const void *, size_t, size_t, FILE *);
 
 

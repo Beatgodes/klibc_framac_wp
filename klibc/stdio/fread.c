@@ -6,6 +6,13 @@
 #include <string.h>
 #include "stdioint.h"
 
+/*@
+	requires 0 <= count;
+	requires \separated(((char*)buf)+(0..count-1), stdio_pvt(file)->next, stdio_pvt(file)->prev, stdio_pvt(file)->buf+(0..(stdio_pvt(file)->bufsiz+32-1)));
+	requires file == &(stdio_pvt(file)->pub);
+	requires valid_IO_file_pvt(stdio_pvt(file));
+	requires \valid(((char*)buf)+(0..count-1));
+@*/
 size_t _fread(void *buf, size_t count, FILE *file)
 {
 	struct _IO_file_pvt *f = stdio_pvt(file);
@@ -22,6 +29,15 @@ size_t _fread(void *buf, size_t count, FILE *file)
 	if (f->obytes)		/* User error! */
 		__fflush(f);
 
+	/*@
+		loop invariant \base_add(p) == \base_addr(buf);
+		loop invariant 0 <= bytes;
+		loop invariant f->data <= rdptr <= f->data + f->bufsize + 32 ||; 
+		loop invariant buf <= p <= buf + \at(count, Pre);
+		loop invariant 0 <= count;
+		loop assigns rv, bypass, rdptr, nb, f->pub._IO_error, f->pub._IO_eof, p, bytes, count, f->ibytes, f->data;
+		loop variant count;
+	@*/
 	while (count) {
 		while (f->ibytes == 0) {
 			/*

@@ -2,6 +2,9 @@
  * string.h
  */
 
+#ifndef _STRING_H
+#define _STRING_H
+
 /*@
   predicate Length_of_str_is{L}(char *s, integer n) =
       n >= 0 && \valid(s+(0..n)) && s[n] == 0 &&
@@ -49,8 +52,8 @@
   }
 
 @*/
-#ifndef _STRING_H
-#define _STRING_H
+
+
 
 #include <klibc/extern.h>
 #include <stddef.h>
