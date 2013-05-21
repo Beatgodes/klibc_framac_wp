@@ -107,6 +107,7 @@ __extern int fclose(FILE *);
 __extern FILE *fdopen(int, const char *);
 
 // beat: initial approach done
+// teddy: fails on 1 rte assertion
 __extern int ungetc(int, FILE *);
 
 // beat: initial approach done
@@ -122,7 +123,7 @@ __extern void rewind(FILE *);
 // depende de _fread
 __extern int fgetc(FILE *);
 
-// beat: seems to be working. parse open mode fails on variant
+// beat: seems to be working
 __extern FILE *fopen(const char *, const char *);
 
 // depende de fgetc
