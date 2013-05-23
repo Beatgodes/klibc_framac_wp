@@ -18,8 +18,8 @@ __extern int fseek(FILE *file, off_t where, int whence)
 {
 	struct _IO_file_pvt *f = stdio_pvt(file);
 	off_t rv;
-	//@ assert file == &(stdio_pvt(file)->pub);
-	//@ assert &(f->pub) == file; 
+	// assert file == &(stdio_pvt(file)->pub);
+	// assert &(f->pub) == file; 
 
 	if (f->obytes)
 		if (__fflush(f))

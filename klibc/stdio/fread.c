@@ -30,10 +30,11 @@ size_t _fread(void *buf, size_t count, FILE *file)
 		__fflush(f);
 
 	/*@
-		loop invariant \base_add(p) == \base_addr(buf);
+		loop invariant \base_addr(p) == \base_addr(buf);
 		loop invariant 0 <= bytes;
-		loop invariant f->data <= rdptr <= f->data + f->bufsize + 32 ||; 
-		loop invariant buf <= p <= buf + \at(count, Pre);
+		loop invariant \base_addr(rdptr) == \base_addr(f->data);
+		loop invariant f->data <= rdptr <= f->data + f->bufsiz + 32; 
+		loop invariant (char*)buf <= p <= (char*)buf + \at(count, Pre);
 		loop invariant 0 <= count;
 		loop assigns rv, bypass, rdptr, nb, f->pub._IO_error, f->pub._IO_eof, p, bytes, count, f->ibytes, f->data;
 		loop variant count;

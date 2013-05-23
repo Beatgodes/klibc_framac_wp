@@ -13,7 +13,7 @@ static int __parse_open_mode(const char *mode)
 	int rwflags = O_RDONLY;
 	int crflags = 0;
 	int eflags  = 0;
-	//@ ghost char *ghost_mode = mode;
+	// ghost char *ghost_mode = mode;
 
 	/*@
 		loop invariant \base_addr(\at(mode, Pre)) == \base_addr(\at(mode, Here));
@@ -22,7 +22,7 @@ static int __parse_open_mode(const char *mode)
 		loop invariant \at(mode, Here) == \at(mode, Pre) + (\at(mode, Here) - \at(mode, Pre));
 		loop assigns rwflags, crflags, eflags, mode;
 		//loop variant Length(\at(mode, Pre)) - (\at(mode, Here) - \at(mode, Pre));
-		loop variant Length(ghost_mode) + (ghost_mode - mode);
+		loop variant Length(\at(mode, Pre)) + (\at(mode, Pre) - mode);
 	@*/
 	while (*mode) {
 		switch (*mode++) {

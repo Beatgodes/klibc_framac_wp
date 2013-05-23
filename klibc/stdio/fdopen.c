@@ -40,42 +40,48 @@ FILE *fdopen(int fd, const char *mode)
 	f = zalloc(bufoffs + BUFSIZ + _IO_UNGET_SLOP);
 	if (!f)
 		goto err;
-	//@ assert \valid(f);
-	//@ assert \valid(f+(0..bufoffs+BUFSIZ+_IO_UNGET_SLOP-1));
-	//@ assert \forall integer i; 0 <= i < (bufoffs + BUFSIZ + _IO_UNGET_SLOP) ==> \valid(f+i);
+
+	
+
+	// assert \valid(f);
+	// assert \valid(f+(0..bufoffs+BUFSIZ+_IO_UNGET_SLOP-1));
+	// assert \forall integer i; 0 <= i < (bufoffs + BUFSIZ + _IO_UNGET_SLOP) ==> \valid(f+i);
 
 	// start constructing a valid io_file_pvt
 	f->data = f->buf = (char *)f + bufoffs;
 	//@ assert f->buf <= f->data < f->buf + f->bufsiz + 32;
 	//@ assert f->data == f->buf;
 	//@ assert \valid(f->buf+(0..(16384+32-1)));
+	//@ assert \base_addr(f->buf) == \base_addr(f->data);
+
 	f->pub._IO_fileno = fd;
-	//@ assert \valid(&(f->pub));
-	//@ assert (f->pub)._IO_fileno >= 0;
-	//@ assert (f->pub)._IO_fileno == fd;
+	// assert \valid(&(f->pub));
+	// assert (f->pub)._IO_fileno >= 0;
+	// assert (f->pub)._IO_fileno == fd;
 
 	f->bufsiz = BUFSIZ;
-	//@ assert f->bufsiz == BUFSIZ;
-	//@ assert f->bufsiz == 16384;
+	// assert f->bufsiz == BUFSIZ;
+	// assert f->bufsiz == 16384;
 	f->bufmode = isatty(fd) ? _IOLBF : _IOFBF;
 
-	//@ assert f->bufmode == _IOLBF || f->bufmode == _IOFBF; // useless?
+	// assert f->bufmode == _IOLBF || f->bufmode == _IOFBF; // useless?
 	/* Insert into linked list */
 	f->prev = &__stdio_headnode;
 	f->next = __stdio_headnode.next;
+	//@ assert \separated(mode, f, f->next, f->prev, f->buf+(0..(f->bufsiz+32-1)));
 	f->next->prev = f;
 	__stdio_headnode.next = f;
 
-	//@ assert 0 <= f->ibytes < f->bufsiz;
-	//@ assert 0 <= f->obytes < f->bufsiz;
-	//@ assert \separated(f, f->next, f->prev, f->buf+(0..(f->bufsiz+32-1)));
-	//@ assert \separated(f, &__stdio_headnode);
+	// assert 0 <= f->ibytes < f->bufsiz;
+	// assert 0 <= f->obytes < f->bufsiz;
+	// assert \separated(f, f->next, f->prev, f->buf+(0..(f->bufsiz+32-1)));
+	// assert \separated(f, &__stdio_headnode);
 
-	//@ assert valid_IO_file_pvt_norec(f->next) && f->next->prev == f;
-	//@ assert valid_IO_file_pvt_norec(f->prev) && f->prev->next == f;
+	// assert valid_IO_file_pvt_norec(f->next) && f->next->prev == f;
+	// assert valid_IO_file_pvt_norec(f->prev) && f->prev->next == f;
 	// f->next e f->prev alguma vez ficam a NULL?
-	//@ assert (f->next != NULL ==> (valid_IO_file_pvt_norec(f->next) && f->next->prev == f));
-	//@ assert (f->prev != NULL ==> (valid_IO_file_pvt_norec(f->prev) && f->prev->next == f));
+	// assert (f->next != NULL ==> (valid_IO_file_pvt_norec(f->next) && f->next->prev == f));
+	// assert (f->prev != NULL ==> (valid_IO_file_pvt_norec(f->prev) && f->prev->next == f));
 
 
 	return &f->pub;

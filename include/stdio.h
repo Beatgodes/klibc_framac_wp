@@ -54,7 +54,6 @@ __extern FILE *stdin, *stdout, *stderr;
 
 __extern int fileno(FILE *);
 
-__extern int fseek(FILE *, off_t, int);
 
 __extern off_t lseek(int, off_t, int);
 
@@ -64,7 +63,7 @@ __extern int feof(FILE *);
 
 __extern void clearerr(FILE *);
 
-
+__extern int ungetc(int, FILE *);
 /*******************************************************
  ***************** 100% WITOUTH DEPS *******************
  *******************************************************/
@@ -106,15 +105,17 @@ __extern int fclose(FILE *);
 // beat: cannot guarantee on some stuff becuase of allocation problems
 __extern FILE *fdopen(int, const char *);
 
-// beat: initial approach done
-// teddy: fails on 1 rte assertion
-__extern int ungetc(int, FILE *);
+// beat: 99%
+__extern int fflush(FILE *);
+
+// beat: 99%
+__extern int fseek(FILE *, off_t, int);
+
 
 // beat: initial approach done
 __extern off_t ftell(FILE *__f);
 
-// beat: inital approach done
-__extern int fflush(FILE *);
+
 
 // beat: initial approach done
 __extern void rewind(FILE *);

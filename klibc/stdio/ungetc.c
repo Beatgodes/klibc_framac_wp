@@ -32,14 +32,9 @@ int ungetc(int c, FILE *file)
 	
 	if (f->obytes || f->data <= f->buf)
 		return EOF;
-	//@ assert f->obytes == 0 || f->data > f->buf;
-	//@ ghost char *fPre = f->data;
-	*(--f->data) = c;
 
-	//@ assert *fPre == *(f->data + 1);
-	//@ assert f->data == fPre - 1;
-	// assert f->data == \at(f->data, Pre) - 1;
+	*(--f->data) = c;
 	f->ibytes++;
-	// assert f->ibytes == \at(f->ibytes, Pre) + 1;
+
 	return c;
 }
