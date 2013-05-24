@@ -111,13 +111,10 @@ __extern int fflush(FILE *);
 // beat: 99%
 __extern int fseek(FILE *, off_t, int);
 
-
 // beat: initial approach done
 __extern off_t ftell(FILE *__f);
 
-
-
-// beat: initial approach done
+// beat: needs post conditions
 __extern void rewind(FILE *);
 
 // teddy: inital approach done
