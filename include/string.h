@@ -102,7 +102,7 @@ __extern void *memcpy(void *dst, const void *src, size_t n);
 
 __extern void bzero(void*, size_t);
 
-// changed code, commented unsigned
+// changed code
 __extern int memcmp(const void *, const void *, size_t);
 
 // commented unsigned, changed code
@@ -111,23 +111,26 @@ __extern void *memrchr(const void *, int, size_t);
 // tudo a funcionar com alt-ergo
 __extern size_t strnlen(const char *, size_t);
 
+// commented unsigned
+__extern int strcmp(const char *, const char *);
+
+
+//beat: forced to change code
+__extern void memswap(void *, void *, size_t);
+
+__extern void *memmove(void *, const void *, size_t);
 
 /*******************************************************
  ********** 100% BUT BROKEN WITH FLUORINE **************
  *******************************************************/
 
-// commented unsigned
-__extern int strcmp(const char *, const char *);
-
-//beat: forced to change code
-__extern void memswap(void *, void *, size_t);
 
 __extern char *strchr(const char *, int);
 
 /*******************************************************
  *************** BASTANTE ADIANTADO ********************
  *******************************************************/
-// beat: suffers from bug from fluorine
+// beat: funcao enorme. esta a escapar algo nos loop invariants
 __extern void *memmem(const /*void*/ char *, /*size_t*/ int, const /*void*/ char *, /*size_t*/ int);
 
 //beat: não prova os behaviors..
@@ -141,13 +144,11 @@ __extern void *memccpy(void *, const void *, int, size_t);
 //devia funcionar.. é quase igual ao strchr.. mas este n funciona n sei pq
 __extern void *memchr(const void *, int, size_t);
 
+
 // beat: commented unsigned, changed code
 // must cover all cases of strings
 __extern int strncmp(const char *, const char *, size_t);
 
-
-// beat: está a faltar algo.. falha em 2 invariantes.. tá perto do completo
-__extern void *memmove(void *, const void *, size_t);
 
 // beat: falha num behavior..acho que o axioma toupper precisa duma afinadela.
 // crashes in fluorine
@@ -157,6 +158,10 @@ __extern int strcasecmp(const char *, const char *);
 // crashes in fluorine
 __extern int strncasecmp(const char *, const char *, size_t);
 
+// beat: muitos probs
+// teddy: alguns probs ainda..
+__extern char *strcpy(char *, const char *);
+
 /*******************************************************
  *********************** RESTO *************************
  *******************************************************/
@@ -164,21 +169,16 @@ __extern int strncasecmp(const char *, const char *, size_t);
 // beat: está dependente do strcpy
 __extern char *strcat(char *, const char *);
 
-// beat: muitos probs
-// teddy: alguns probs ainda..
-__extern char *strcpy(char *, const char *);
+
 
 // beat: depende do strxspn
 __extern size_t strcspn(const char *, const char *);
 
-// beat: lol...
+// beat: malloc problem
 __extern char *strdup(const char *);
 
-// beat: nem vou olhar.. vai escar tanto como o strdup
+// beat: malloc problem
 __extern char *strndup(const char *, size_t);
-
-__extern char *strerror(int);
-__extern char *strsignal(int);
 
 // beat: muito verde ainda
 __extern char *strncat(char *, const char *, size_t);
@@ -210,11 +210,12 @@ __extern char *strtok(char *, const char *);
 __extern char *strtok_r(char *, const char *, char **);
 
 /*******************************************************
- ******** NOT FOUND FUNCTIONS **************************
+ ******** others **************************
  *******************************************************/
 __extern char *index(const char *, int);
 __extern char *rindex(const char *, int);
-
+__extern char *strerror(int);
+__extern char *strsignal(int);
 
 /*******************************************************
  ********EXTERNAL -- CONTRACT ONLY *********************

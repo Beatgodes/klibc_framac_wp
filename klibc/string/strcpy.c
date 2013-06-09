@@ -20,28 +20,31 @@ char *strcpy(char *dst, const char *src)
 	char *q = dst;
 	const char *p = src;
 	char ch;
-
-
-  //do {
+	//@ ghost int k = 0;
 
  	/*@
+ 		loop invariant 0 <= k <= Length(src);
+ 		loop invariant k == p - src;
 		loop invariant \base_addr(q) == \base_addr(dst);
 		loop invariant \base_addr(p) == \base_addr(src);
 		loop invariant dst <= q <= dst + Length(src);
 		loop invariant src <= p <= src + Length(src);
-		loop invariant q == dst + (p - src);
-		loop invariant p == src + (q - dst);
-		loop invariant \forall integer i; 0 <= i < (p - src) ==> dst[i] == src[i];
-		loop invariant \forall integer i; 0 <= i < (p - src) ==> src[i] != 0;
-		loop assigns ch, p, q, dst[0..(p-src)-1];
-		loop variant Length(src) - (p - src);
+		loop invariant q == dst + k;
+		loop invariant p == src + k;
+		loop invariant \forall integer i; 0 <= i < k ==> dst[i] == src[i];
+		loop invariant \forall integer i; 0 <= i < k ==> src[i] != 0;
+		loop assigns ch, p, q, k, dst[0..k-1];
+		loop variant Length(src) - k;
 
 	@*/
-	while(ch)
+  do {
+
+
+	//while(ch)
 		*q++ = ch = *p++;
+	//ghost k++;
 
-
-  //} while (ch);
+  } while (ch);
 
 	return dst;
 }

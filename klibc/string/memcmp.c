@@ -12,12 +12,12 @@
   assigns \nothing;
   behavior eq:
     assumes n >= 0;
-    assumes \forall integer i; 0 <= i < n ==> ((char*)s1)[i] == ((char*)s2)[i];
+    assumes \forall integer i; 0 <= i < n ==> ((unsigned char*)s1)[i] == ((unsigned char*)s2)[i];
     ensures \result == 0;
 
   behavior not_eq:
     assumes n > 0;
-    assumes \exists integer i; 0 <= i < n && ((char*)s1)[i] != ((char*)s2)[i];
+    assumes \exists integer i; 0 <= i < n && ((unsigned char*)s1)[i] != ((unsigned char*)s2)[i];
     ensures \result != 0;
 
   complete behaviors;
@@ -25,16 +25,16 @@
 @*/
 int memcmp(const void *s1, const void *s2, size_t n)
 {
-  const /*unsigned*/ char *c1 = s1, *c2 = s2;
+  const unsigned char *c1 = s1, *c2 = s2;
   int d = 0;
 
   /*@
     loop invariant 0 <= n <= \at(n, Pre);
-    loop invariant (char*)s1 <= c1 <= (char*)s1+\at(n, Pre);
-    loop invariant (char*)s2 <= c2 <= (char*)s2+\at(n, Pre);
-    loop invariant c1 == (char*)s1+(\at(n,Pre) - n);
-    loop invariant c2 == (char*)s2+(\at(n,Pre) - n);
-    loop invariant \forall integer i; 0 <= i < (\at(n, Pre) - n) ==> ((char*)s1)[i] == ((char*)s2)[i];
+    loop invariant (unsigned char*)s1 <= c1 <= (unsigned char*)s1+\at(n, Pre);
+    loop invariant (unsigned char*)s2 <= c2 <= (unsigned char*)s2+\at(n, Pre);
+    loop invariant c1 == (unsigned char*)s1+(\at(n,Pre) - n);
+    loop invariant c2 == (unsigned char*)s2+(\at(n,Pre) - n);
+    loop invariant \forall integer i; 0 <= i < (\at(n, Pre) - n) ==> ((unsigned char*)s1)[i] == ((unsigned char*)s2)[i];
     loop invariant d == 0;
 
     loop assigns n, d, c1, c2;

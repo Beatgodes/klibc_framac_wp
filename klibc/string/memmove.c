@@ -58,7 +58,6 @@ void *memmove(void *dst, const void *src, size_t n)
 		/*@
 			loop invariant \base_addr(p) == \base_addr(src);
 			loop invariant \base_addr(q) == \base_addr(dst);
-			loop invariant q >= p;
 			loop invariant 0 <= n <= \at(n, Pre);
 			loop invariant p == ((char*)src) + n;
 			loop invariant q == ((char*)dst) + n;

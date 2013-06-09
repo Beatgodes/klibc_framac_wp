@@ -9,8 +9,8 @@
 #include <strxspn.h>
 /*@
 	requires parity == 0 || parity == 1;
-	requires \exists integer i; Length_of_str_is(s,i) && i <= 200000;
-	requires \exists integer i; Length_of_str_is(map,i) && i <= 200000;
+	requires \exists integer i; Length_of_str_is(s,i) && 0 <= i <= 200000;
+	requires \exists integer i; Length_of_str_is(map,i) && 0 <= i <= 200000;
 	requires \separated(s+(0..Length(s)), map+(0..Length(map)));
 	assigns \nothing;
 	ensures 0 <= \result <= Length(s);
@@ -25,6 +25,8 @@ size_t __strxspn(const char *s, const char *map, int parity)
 
 	//@ ghost int k = 0;
 	/*@
+		loop invariant \base_addr(map) == \base_addr(\at(map, Pre));
+		loop invariant \at(map, Pre) <= map <= \at(map, Pre) + Length(\at(map, Pre));
 		loop invariant k == map - \at(map,Pre);
 		loop invariant 0 <= k <= Length(\at(map, Pre));
 		loop invariant map == \at(map, Pre) + k;
@@ -44,6 +46,8 @@ size_t __strxspn(const char *s, const char *map, int parity)
 	/* Calculate span length */
 
 	/*@
+		loop invariant \base_addr(s) == \base_addr(\at(s, Pre));
+		loop invariant \at(s, Pre) <= s <= \at(s, Pre) + Length(\at(s, Pre));
 		loop invariant 0 <= n <= Length(\at(s, Pre));
 		loop invariant s == \at(s, Pre) + n;
 		loop invariant \forall integer i; 0 <= i < n ==> \at(s[i], Pre) != 0;
