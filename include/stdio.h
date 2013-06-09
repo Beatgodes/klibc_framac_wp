@@ -138,11 +138,7 @@ __extern int fputs(const char *, FILE *);
 // depende de _fwrite
 __extern int fputc(int, FILE *);
 
-// depende de vfprintf
-__extern int fprintf(FILE *, const char *, ...);
 
-// depende de vsnprintf e _fwrite
-__extern int vfprintf(FILE *, const char *, va_list);
 
 // depende de __fflush
 __extern size_t _fread(void *, size_t, FILE *);
@@ -206,6 +202,15 @@ __extern_inline void clearerr(FILE *__f)
 /*******************************************************
  ***************** NOT FILE API ************************
  *******************************************************/
+
+// ignore handling unkown number of args
+
+// depende de vfprintf
+__extern int fprintf(FILE *, const char *, ...);
+
+// depende de vsnprintf e _fwrite
+__extern int vfprintf(FILE *, const char *, va_list);
+
 __extern int puts(const char *);
 __extern int printf(const char *, ...);
 __extern int vprintf(const char *, va_list);

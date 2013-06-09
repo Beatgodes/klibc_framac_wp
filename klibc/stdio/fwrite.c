@@ -5,6 +5,12 @@
 #include <string.h>
 #include "stdioint.h"
 
+/*@
+	requires count >= 0;
+	requires \valid(((char*)buf)+(0..count-1));
+	requires valid_IO_file_pvt(f);
+	
+@*/
 static size_t fwrite_noflush(const void *buf, size_t count,
 			     struct _IO_file_pvt *f)
 {

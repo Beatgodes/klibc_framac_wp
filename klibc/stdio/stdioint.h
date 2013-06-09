@@ -38,7 +38,7 @@ struct _IO_file_pvt {
 			&& 0 <= f->ibytes < f->bufsiz
 			&& 0 <= f->obytes < f->bufsiz
 			&& valid_FILE(&(f->pub))							// call to valid FILE struct
-			&& f == stdio_pvt(&(f->pub))
+			//&& f == stdio_pvt(&(f->pub))
 			&& \separated(f, f->next, f->prev, f->buf+(0..(f->bufsiz+32-1)))
 			&& f->buf <= f->data < f->buf + f->bufsiz + 32
 			&& \valid(f->next)
