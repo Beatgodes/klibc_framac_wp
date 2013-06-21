@@ -131,7 +131,7 @@ __extern char *strchr(const char *, int);
  *************** BASTANTE ADIANTADO ********************
  *******************************************************/
 // beat: funcao enorme. esta a escapar algo nos loop invariants
-__extern void *memmem(const /*void*/ char *, /*size_t*/ int, const /*void*/ char *, /*size_t*/ int);
+__extern void *memmem(const void *, size_t, const void *, size_t);
 
 //beat: não prova os behaviors..
 __extern char *strrchr(const char *, int);

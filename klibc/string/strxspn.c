@@ -22,6 +22,8 @@ size_t __strxspn(const char *s, const char *map, int parity)
 
 	/* Create bitmap */
 	memset(matchmap, 0, sizeof matchmap);
+	//@ assert \forall integer k; 0 <= k < UCHAR_MAX + 1 ==> matchmap[k] == 0;
+
 
 	//@ ghost int k = 0;
 	/*@
@@ -32,6 +34,7 @@ size_t __strxspn(const char *s, const char *map, int parity)
 		loop invariant map == \at(map, Pre) + k;
 		loop invariant \forall integer i; 0 <= i <= 255 ==> (matchmap[i] == 0 || matchmap[i] == 1);
 		loop invariant \forall integer i; 0 <= i < k ==> \at(map[i], Pre) != 0;
+		//loop invariant \forall integer i; 0 <= i < k ==> matchmap[(unsigned char)(\at(map[i], Pre))] == 1;
 		loop assigns map, matchmap[0..255], k;
 		loop variant Length(\at(map,Pre)) - k;
 	@*/
@@ -42,6 +45,7 @@ size_t __strxspn(const char *s, const char *map, int parity)
 
 	/* Make sure the null character never matches */
 	matchmap[0] = parity;
+	//@ assert matchmap[0] == parity;
 
 	/* Calculate span length */
 
