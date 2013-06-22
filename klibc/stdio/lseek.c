@@ -19,7 +19,7 @@
 	requires fd >= 0;
 	requires whence == SEEK_SET || whence == SEEK_CUR || whence == SEEK_END;
 	requires \valid(res);
-	assigns \nothing;
+	assigns *res;
 	ensures *res >= 0;
 	ensures \result == 0 || \result > 0;
 @*/

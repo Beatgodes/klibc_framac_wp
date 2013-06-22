@@ -10,7 +10,8 @@
 	requires whence == SEEK_SET || whence == SEEK_CUR || whence == SEEK_END;
 	requires where >= 0;
 
-	assigns stdio_pvt(file)->ibytes, stdio_pvt(file)->pub._IO_eof, stdio_pvt(file)->pub._IO_error, stdio_pvt(file)->obytes;
+	//assigns stdio_pvt(file)->ibytes, stdio_pvt(file)->pub._IO_eof, stdio_pvt(file)->pub._IO_error, 
+	//		stdio_pvt(file)->obytes, file->_IO_eof, file->_IO_error;
 	ensures \result == 0 || \result == -1;
 
 @*/

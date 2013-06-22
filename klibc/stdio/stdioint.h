@@ -55,6 +55,7 @@ struct _IO_file_pvt {
 			&& valid_FILE(&(f->pub))							// call to valid FILE struct
 			&& \separated(f, f->next, f->prev, f->buf+(0..(f->bufsiz+32-1)))
 			&& f->buf <= f->data < f->buf + f->bufsiz + 32
+			&& stdio_pvt(&(f->pub)) == f
 			&& valid_IO_file_pvt_norec(f->next) && f->next->prev == f
 			&& \base_addr(f->data) == \base_addr(f->buf)
 			&& valid_IO_file_pvt_norec(f->prev) && f->prev->next == f
