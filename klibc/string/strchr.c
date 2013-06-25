@@ -12,8 +12,7 @@
 
   behavior exists:
     assumes \exists integer i; 0 <= i <= Length(s) && s[i] == (char)c;
-    ensures \exists integer i; Exists_first_occurence_of_char(s, c, i) && \result == s+i;
-    //ensures \result == s + PosOfChar(s,c); // isto devia dar.. passa-se algo com o axioma
+    ensures \exists integer i;Exists_first_occurence_of_char(s, c, i);
     ensures *\result == (char)c;
 
   behavior not_exists:
@@ -25,20 +24,23 @@
 @*/
 char *strchr(const char *s, int c)
 {
-  /*@
+  /*@ 
+  	 loop invariant \base_addr(s) == \base_addr(\at(s, Pre));
      loop invariant \at(s,Pre) <= s <= (\at(s,Pre) + Length(\at(s,Pre)));
-     loop invariant \forall integer i; 0 <= i < (s - \at(s,Pre)) ==> \at(s,Pre)[i] != (char)c;
+     loop invariant \forall integer i; 0 <= i < (s - \at(s,Pre)) ==> \at(s[i],Pre) != (char)c;
      loop invariant s == \at(s,Pre) + (s - \at(s,Pre));
      loop assigns s;
      loop variant Length(\at(s,Pre)) - (s - \at(s,Pre));
    */
   while (*s != (char)c) {
+  	//@ assert *s != (char)c;
     if (!*s)
       return NULL;
     s++;
   }
 
-  //@ assert *s == c;
+  //@ assert Exists_first_occurence_of_char(\at(s, Pre), c, s - \at(s, Pre));
+  //@ assert *s == (char)c;
   return (char *)s;
 }
 

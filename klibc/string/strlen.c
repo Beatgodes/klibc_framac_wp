@@ -5,6 +5,7 @@
 
 int strlen(const char *s) {
 	const char *ss = s;
+
 	/*@
 		loop invariant \base_addr(s) == \base_addr(ss);
 		loop invariant s <= ss <= s+Length(s);
@@ -15,6 +16,6 @@ int strlen(const char *s) {
 	while (*ss)
 		ss++;
 
-	/*@ assert Length_of_str_is(s,ss-s); */
+	//@ assert Length_of_str_is(s,ss-s);
 	return ss - s;
 }
