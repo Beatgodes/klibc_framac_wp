@@ -13,8 +13,7 @@
 	assigns \nothing;
 
 	behavior exists:
-		assumes \exists integer i; 0 <= i < Length(s) && char_in_str(accept, s[i])
-			&& \forall integer k; 0 <= k < i ==> !char_in_str(accept, s[k]);
+		assumes \exists integer i; 0 <= i < Length(s) && char_in_str(accept, s[i]);
 		ensures \forall integer i; 0 <= i < (\result - s) ==> !char_in_str(accept, s[i]);
 		ensures char_in_str(accept, *\result);
 
@@ -29,6 +28,7 @@
 char *strpbrk(const char *s, const char *accept)
 {
 	const char *ss = s + __strxspn(s, accept, 1);
-
+	//@ assert \base_addr(ss) == \base_addr(s);
+	//@ assert s <= ss <= s + Length(s);
 	return *ss ? (char *)ss : NULL;
 }

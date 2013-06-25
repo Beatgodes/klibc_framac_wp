@@ -22,7 +22,7 @@
 
 /*@
     predicate char_in_str{L}(char *s, char c) =
-        \exists integer i; 0 <= i <= Length(s) && s[i] == c;
+        \exists integer i; 0 <= i < Length(s) && s[i] == c;
 @*/
 
 

@@ -13,9 +13,21 @@
 	requires \exists integer i; Length_of_str_is(map,i);
 	requires \separated(s+(0..Length(s)), map+(0..Length(map)));
 	assigns \nothing;
-	ensures parity == 0 ==> (\forall integer i; 0 <= i < \result ==> char_in_str(map, s[i]));
-	ensures parity == 1 ==> (\forall integer i; 0 <= i < \result ==> !char_in_str(map, s[i]));
-	ensures 0 <= \result < Length(s);
+
+	behavior zero:
+		assumes parity == 0;
+		ensures \forall integer i; 0 <= i < \result ==> char_in_str(map, s[i]);
+		ensures !char_in_str(map, s[\result]);
+		ensures 0 <= \result <= Length(s);
+
+	behavior one:
+		assumes parity == 1;
+		ensures \forall integer i; 0 <= i < \result ==> !char_in_str(map, s[i]);
+		ensures char_in_str(map, s[\result]);
+		ensures 0 <= \result <= Length(s);
+
+	complete behaviors;
+	disjoint behaviors;
 
 @*/
 size_t __strxspn(const char *s, const char *map, int parity)
