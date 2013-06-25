@@ -16,6 +16,10 @@
 		assumes \exists integer i; 0 <= i < Length(s) && char_in_str(accept, s[i]);
 		ensures \forall integer i; 0 <= i < (\result - s) ==> !char_in_str(accept, s[i]);
 		ensures char_in_str(accept, *\result);
+		ensures s <= \result < s + Length(s);
+		ensures \exists integer i; 0 <= i < Length(s) && char_in_str(accept, s[i]) && \result == s + i 
+				&& (\forall integer j; 0 <= j < i ==> !char_in_str(accept, s[j]));
+		ensures \base_addr(s) == \base_addr(\result);
 
 	behavior not_exists:
 		assumes \forall integer i; 0 <= i < Length(s) ==> !char_in_str(accept, s[i]);
