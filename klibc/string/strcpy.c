@@ -17,6 +17,7 @@
 	ensures \exists integer i; Length_of_str_is(src,i) && Length_of_str_is(dst,i);
 	ensures \forall integer i; 0 <= i <= Length(src) ==> dst[i] == src[i];
 	ensures \result == dst;
+	ensures \base_addr(\result) == \base_addr(dst);
 @*/
 char *strcpy(char *dst, const char *src)
 {
