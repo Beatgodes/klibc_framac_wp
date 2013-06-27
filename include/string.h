@@ -78,7 +78,7 @@
 __extern int strlen(const char *s);
 
 
-// beat: forced to change code
+// forced to change code
 /*@
   requires n >= 0;
   requires \valid(((char*)dst)+(0..n-1));
@@ -91,7 +91,7 @@ __extern int strlen(const char *s);
 //__extern void *memset(void*, int, size_t);
 
 
- //beat: forced to change code
+ // forced to change code
 /*@
     requires \separated(((char*)src)+(0..n-1), ((char*)dst)+(0..n-1));
     requires n >= 0;
@@ -122,7 +122,7 @@ __extern size_t strnlen(const char *, size_t);
 // commented unsigned
 __extern int strcmp(const char *, const char *);
 
-//beat: forced to change code
+// forced to change code
 __extern void memswap(void *, void *, size_t);
 
 __extern void *memmove(void *, const void *, size_t);
@@ -159,61 +159,60 @@ __extern size_t strcspn(const char *, const char *);
 /*******************************************************
  *************** BASTANTE ADIANTADO ********************
  *******************************************************/
-// beat: funcao enorme. esta a escapar algo nos loop invariants
+// funcao enorme. esta a escapar algo nos loop invariants
 __extern void *memmem(const void *, size_t, const void *, size_t);
 
-// beat: não prova os behaviors..
+// não prova os behaviors..
 __extern char *strrchr(const char *, int);
 
-// beat não prova os behaviors...
+// não prova os behaviors...
 // o problema está no exioma PosOfChar.. aquilo não funciona...
 __extern void *memccpy(void *, const void *, int, size_t);
 
-// beat: changed code, commented unsigned.
+// changed code, commented unsigned.
 // same not proved behavior
 __extern void *memchr(const void *, int, size_t);
 __extern char *strrchr(const char *, int);
 
 
-// beat: commented unsigned, changed code
+// commented unsigned, changed code
 // must cover all cases of strings
 __extern int strncmp(const char *, const char *, size_t);
 
 
-// beat: falha num behavior..acho que o axioma toupper precisa duma afinadela.
+// falha num behavior..acho que o axioma toupper precisa duma afinadela.
 // bugged in fluorine: doesnt schedule all POs
 __extern int strcasecmp(const char *, const char *);
 
-// beat: combinação do strcasecmp e strncmp.. falta cenas
+// combinação do strcasecmp e strncmp.. falta cenas
 __extern int strncasecmp(const char *, const char *, size_t);
 
-// beat: muitos probs
-// teddy: alguns probs ainda..
+// muits probs
 __extern char *strcpy(char *, const char *);
 
 /*******************************************************
  *********************** RESTO *************************
  *******************************************************/
 
-// beat: está dependente do strcpy
+// está dependente do strcpy
 __extern char *strcat(char *, const char *);
 
-// beat: muito verde ainda
+// muito verde ainda
 __extern char *strncat(char *, const char *, size_t);
 
-// beat: muito verde
+// muito verde
 __extern size_t strlcat(char *, const char *, size_t);
 
 __extern char *strncpy(char *, const char *, size_t);
 
-// beat: com muitos problemas ainda
+// com muitos problemas ainda
 __extern /*size_t*/ int strlcpy(char *, const char *, /*size_t*/ int);
 
-// beat: depende de memmem
+// depende de memmem
 __extern char *strstr(const char *, const char *);
 
 
-// beat: malloc problem
+// malloc problem
 __extern char *strdup(const char *);
 __extern char *strndup(const char *, size_t);
 

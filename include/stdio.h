@@ -77,17 +77,17 @@ __extern void rewind(FILE *);
  *******************************************************/
 
 
-// beat: cannot guarantee on some stuff becuase of allocation problems
+// cannot guarantee on some stuff becuase of allocation problems
 __extern FILE *fdopen(int, const char *);
 
-// beat: overflow problem
+// overflow problem
 __extern off_t ftell(FILE *__f);
 
-// teddy: inital approach done
+// inital approach done
 // depende de _fread
 __extern int fgetc(FILE *);
 
-// beat: seems to be working
+// seems to be working
 __extern FILE *fopen(const char *, const char *);
 
 // depende de fgetc
