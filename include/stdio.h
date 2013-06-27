@@ -65,16 +65,12 @@ __extern void clearerr(FILE *);
 __extern int ungetc(int, FILE *);
 
 __extern int fflush(FILE *);
-/*******************************************************
- ***************** 100% WITOUTH DEPS *******************
- *******************************************************/
 
-/* 
-	Dedicado a funções que dão 100% sem verificar os filhos.
-	Por ex, fclose depende de fflush, mas simplesente não inclui o fflush.c ao verificar
-*/
+__extern int fseek(FILE *, off_t, int);
 
 __extern int fclose(FILE *);
+
+__extern void rewind(FILE *);
 
 /*******************************************************
  ***************** VISTOS ******************************
@@ -84,16 +80,8 @@ __extern int fclose(FILE *);
 // beat: cannot guarantee on some stuff becuase of allocation problems
 __extern FILE *fdopen(int, const char *);
 
-
-
-// beat: 99%
-__extern int fseek(FILE *, off_t, int);
-
-// beat: initial approach done
+// beat: overflow problem
 __extern off_t ftell(FILE *__f);
-
-// beat: needs post conditions
-__extern void rewind(FILE *);
 
 // teddy: inital approach done
 // depende de _fread
@@ -115,7 +103,6 @@ __extern int fputs(const char *, FILE *);
 
 // depende de _fwrite
 __extern int fputc(int, FILE *);
-
 
 // depende de __fflush
 __extern size_t _fread(void *, size_t, FILE *);

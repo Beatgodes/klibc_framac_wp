@@ -94,6 +94,9 @@ err:
 }
 
 /*@
+	requires \valid(stdin);
+	requires \valid(stdout);
+	requires \valid(stderr);
 	assigns stdin, stdout, stderr, stdio_pvt(stderr)->bufmode;
 	ensures valid_FILE(stdin) && valid_FILE(stdout) && valid_FILE(stderr);
 	ensures stdin->_IO_fileno == 0;

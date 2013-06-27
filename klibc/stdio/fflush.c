@@ -6,9 +6,8 @@
 
 /*@
 	requires valid_IO_file_pvt(f);
-	//assigns f->ibytes, f->pub._IO_eof, f->pub._IO_error, f->obytes, errno;
+	assigns f->ibytes, f->pub._IO_eof, f->pub._IO_error, f->obytes, errno;
 	ensures \result >= -1;
-
 @*/
 int __fflush(struct _IO_file_pvt *f)
 {

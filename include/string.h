@@ -127,7 +127,34 @@ __extern void memswap(void *, void *, size_t);
 
 __extern void *memmove(void *, const void *, size_t);
 
+__extern size_t strspn(const char *, const char *);
+__extern char *strsep(char **, const char *);
 
+/*@
+  requires \exists integer i; Length_of_str_is(s, i);
+  requires \exists integer i; Length_of_str_is(accept, i);
+  requires \separated(s+(0..Length(s)), accept+(0..Length(accept)));
+  assigns \nothing;
+
+  behavior exists:
+    assumes \exists integer i; 0 <= i < Length(s) && char_in_str(accept, s[i]);
+    ensures \forall integer i; 0 <= i < (\result - s) ==> !char_in_str(accept, s[i]);
+    ensures char_in_str(accept, *\result);
+    ensures \base_addr(s) == \base_addr(\result);
+    ensures s <= \result < s + Length(s);
+
+  behavior not_exists:
+    assumes \forall integer i; 0 <= i < Length(s) ==> !char_in_str(accept, s[i]);
+    ensures \result == \null;
+
+  complete behaviors;
+  disjoint behaviors;
+
+@*/
+__extern char *strpbrk(const char *s, const char *accept);
+
+
+__extern size_t strcspn(const char *, const char *);
 
 /*******************************************************
  *************** BASTANTE ADIANTADO ********************
@@ -193,32 +220,7 @@ __extern char *strndup(const char *, size_t);
 // depends on strxspn
 __extern char *strtok_r(char *, const char *, char **);
 __extern char *strtok(char *, const char *);
-__extern size_t strspn(const char *, const char *);
-__extern char *strsep(char **, const char *);
 
-/*@
-  requires \exists integer i; Length_of_str_is(s, i);
-  requires \exists integer i; Length_of_str_is(accept, i);
-  requires \separated(s+(0..Length(s)), accept+(0..Length(accept)));
-  assigns \nothing;
-
-  behavior exists:
-    assumes \exists integer i; 0 <= i < Length(s) && char_in_str(accept, s[i]);
-    ensures \forall integer i; 0 <= i < (\result - s) ==> !char_in_str(accept, s[i]);
-    ensures char_in_str(accept, *\result);
-    ensures \base_addr(s) == \base_addr(\result);
-    ensures s <= \result < s + Length(s);
-
-  behavior not_exists:
-    assumes \forall integer i; 0 <= i < Length(s) ==> !char_in_str(accept, s[i]);
-    ensures \result == \null;
-
-  complete behaviors;
-  disjoint behaviors;
-
-@*/
-__extern char *strpbrk(const char *s, const char *accept);
-__extern size_t strcspn(const char *, const char *);
 
 
 __extern char *strchr(const char *s, int c);

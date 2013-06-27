@@ -1,6 +1,7 @@
 #include "stdioint.h"
 
 /*@
+	requires valid_FILE(file);
 	requires file == &(stdio_pvt(file)->pub);
 	requires valid_IO_file_pvt(stdio_pvt(file));
 	assigns \nothing;

@@ -7,7 +7,8 @@
 /*@
 	requires file == &(stdio_pvt(file)->pub);
 	requires valid_IO_file_pvt(stdio_pvt(file));
-	assigns stdio_pvt(file)->next->prev, stdio_pvt(file)->prev->next;
+	assigns stdio_pvt(file)->next->prev, stdio_pvt(file)->prev->next,
+		stdio_pvt(file)->ibytes, stdio_pvt(file)->pub._IO_eof, stdio_pvt(file)->pub._IO_error, stdio_pvt(file)->obytes, errno;
  	ensures \result == 0 || \result -1;
  @*/
 int fclose(FILE *file)

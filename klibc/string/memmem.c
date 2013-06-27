@@ -25,12 +25,12 @@
 
 	behavior not_occur:
 		assumes n >= m && m != 0 && n != 0;
-		assumes \forall integer j; 0 <= j <= n-m ==> (\exists integer i; 0 <= i < m ==> ((char*)needle)[i] != ((char*)haystack)[j+i]);
+		assumes \forall integer j; 0 <= j <= n-m ==> (\exists integer i; 0 <= i < m && ((unsigned char*)needle)[i] != ((unsigned char*)haystack)[j+i]);
 		ensures \result == \null;
 
 	behavior occr:
 		assumes n >= m && m != 0 && n != 0;
-		assumes \exists integer j; 0 <= j <= n-m && (\forall integer i; 0 <= i < m ==> ((char*)needle)[i] == ((char*)haystack)[j+i]);
+		assumes \exists integer j; 0 <= j <= n-m && (\forall integer i; 0 <= i < m ==> ((unsigned char*)needle)[i] == ((unsigned char*)haystack)[j+i]);
 		ensures \result != \null;
 
 	complete behaviors;
@@ -38,8 +38,8 @@
 @*/
 void *memmem(const void *haystack, size_t n, const void *needle, size_t m)
 {
-	const /*unsigned*/ char *y = (const /*unsigned*/ char *)haystack;
-	const /*unsigned*/ char *x = (const /*unsigned*/ char *)needle;
+	const unsigned char *y = (const unsigned char *)haystack;
+	const unsigned char *x = (const unsigned char *)needle;
 
 	size_t j, k, l;
 
@@ -62,7 +62,7 @@ void *memmem(const void *haystack, size_t n, const void *needle, size_t m)
 			loop invariant \base_addr(x) == \base_addr(needle);
 			loop invariant \base_addr(y) == \base_addr(haystack);
 			loop invariant 0 <= j <= n-m+2;
-			//loop invariant \forall integer i; 0 <= i < j ==> (\exists integer z; 0 <= z < m-2 ==> needle[2+z] != haystack[z+i+2]);
+			loop invariant \forall integer i; 0 <= i < j ==> (\exists integer z; 0 <= z < m-2 ==> ((unsigned char*)needle)[2+z] != ((unsigned char*)haystack)[z+i+2]);
 			loop assigns j;
 			loop variant \at(n,Pre)-\at(m,Pre)-j;
 		@*/
@@ -80,27 +80,27 @@ void *memmem(const void *haystack, size_t n, const void *needle, size_t m)
 		/*@
 			loop invariant \base_addr(x) == \base_addr(needle);
 			loop invariant \base_addr(y) == \base_addr(haystack);
-			loop invariant ((char*)haystack) <= y <= ((char*)haystack)+\at(n, Pre);
-			loop invariant y == ((char*)haystack)+(\at(n,Pre) -n);
-			loop invariant \forall integer i; 0 <= i < (\at(n,Pre) - n) ==> ((char*)haystack)[i] != ((char*)needle)[0];
-			loop invariant 0 <= \at(n, Here) <= \at(n, Pre);
+			loop invariant ((unsigned char*)haystack) <= y <= ((unsigned char*)haystack)+\at(n, Pre);
+			loop invariant y == ((unsigned char*)haystack)+(\at(n,Pre) -n);
+			loop invariant \forall integer i; 0 <= i < (\at(n,Pre) - n) ==> ((unsigned char*)haystack)[i] != ((unsigned char*)needle)[0];
+			loop invariant 0 < \at(n, Here) <= \at(n, Pre);
 			loop assigns y, n;
 			loop variant n;
 		@*/
-		while(n){
+		/*while(n){
 			if (*y == *x)
 				return (void *)y;
 			y++;
 			n--;
 		}
-
+*/
 		// original code.. does not work...
-		/*	
+			
 		do {
 			if (*y == *x)
 				return (void *)y;
 			y++;
 		} while (--n);
-*/
+
 	return NULL;
 }

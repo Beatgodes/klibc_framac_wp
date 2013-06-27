@@ -11,12 +11,14 @@
   assigns \nothing;
 
   behavior exists:
-    assumes \exists integer i; 0 <= i <= Length(s) && s[i] == (char)c;
-    ensures \exists integer i;Exists_first_occurence_of_char(s, c, i);
+    assumes \exists integer i; 0 <= i < Length(s) && s[i] == (char)c;
+    ensures \base_addr(s) == \base_addr(\result);
+    ensures s <= \result <= s + Length(s);
+    ensures Exists_first_occurence_of_char(s, c, \result - s);
     ensures *\result == (char)c;
 
   behavior not_exists:
-    assumes \forall integer i; 0 <= i <= Length(s) ==> s[i] != (char)c;
+    assumes \forall integer i; 0 <= i < Length(s) ==> s[i] != (char)c;
     ensures \result == \null;
 
   complete behaviors;
@@ -41,6 +43,8 @@ char *strchr(const char *s, int c)
 
   //@ assert Exists_first_occurence_of_char(\at(s, Pre), c, s - \at(s, Pre));
   //@ assert *s == (char)c;
+  //@ assert \base_addr(\at(s, Pre)) == \base_addr(\at(s, Here));
+  //@ assert \at(s, Pre) <= \at(s, Here) <= \at(s, Pre) + Length(\at(s, Pre));
   return (char *)s;
 }
 
