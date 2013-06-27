@@ -3,7 +3,7 @@ klibc_framac_wp
 
 klibc Verification with Frama-C and WP
 
-Verification of functions from <string.h> and <stdio.h>
+Verification of functions from string.h and stdio.
 
 Frama-C Fluorine 2 with
 - Alt-ergo 0.95.1
@@ -18,4 +18,4 @@ Before launching Frama-C, add the following Environment Variable
 
 So that Frama-C can find the klibc header files
 
-For mor information on verified functions, check the header files
+For more information on verified functions, check the header files
