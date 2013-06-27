@@ -29,7 +29,7 @@ extern int __llseek(int fd, unsigned long hi, unsigned long lo, off_t * res,
 /*@
 	requires fd >= 0;
 	requires whence == SEEK_SET || whence == SEEK_CUR || whence == SEEK_END;
-	assigns \nothing;
+	assigns errno;
 	ensures \result == -1 || \result >= 0;
 @*/
 off_t lseek(int fd, off_t offset, int whence)
