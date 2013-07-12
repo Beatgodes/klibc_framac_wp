@@ -33,9 +33,9 @@ int __fflush(struct _IO_file_pvt *f)
 		loop invariant \base_addr(p) == \base_addr(f->buf);
 		loop invariant -1 <= rv <= f->obytes;
 		loop invariant \base_addr(f->buf) == \base_addr(f->data) == \base_addr(p);
-		loop invariant f->buf <= p < f->buf + f->bufsiz + 32;
+		loop invariant f->buf <= p <= f->buf + f->bufsiz + 32;
 		loop invariant \valid(p+(0..f->obytes-1));
-		loop assigns f->obytes, p, f->pub._IO_eof, f->pub._IO_error, rv, errno;
+		loop assigns f->obytes, p, f->pub._IO_eof, f->pub._IO_error, rv;
 		loop variant f->obytes;
 	@*/
 	while (f->obytes) {

@@ -97,7 +97,7 @@ err:
 	requires \valid(stdin);
 	requires \valid(stdout);
 	requires \valid(stderr);
-	assigns stdin, stdout, stderr, stdio_pvt(stderr)->bufmode;
+	assigns stdin, stdout, stderr, stdio_pvt(stderr)->bufmode, errno;
 	ensures valid_FILE(stdin) && valid_FILE(stdout) && valid_FILE(stderr);
 	ensures stdin->_IO_fileno == 0;
 	ensures stdout->_IO_fileno == 1;

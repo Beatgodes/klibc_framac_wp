@@ -3,7 +3,7 @@ klibc_framac_wp
 
 klibc Verification with Frama-C and WP
 
-Verification of functions from string.h and stdio.
+Verification of functions from string.h and stdio.h
 
 Frama-C Fluorine 2 with
 - Alt-ergo 0.95.1

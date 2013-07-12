@@ -4,8 +4,14 @@
 
 #include <stdio.h>
 
+#include <stdioint.h>
+
+
 /*@
 	requires valid_FILE(f);
+	requires f != \null;
+	requires f == &(stdio_pvt(f)->pub);
+	requires valid_IO_file_pvt(stdio_pvt(f));
 	ensures \result == s;
 @*/
 char *fgets(char *s, int n, FILE *f)
