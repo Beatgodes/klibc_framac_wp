@@ -2,6 +2,9 @@
  * memset.c
  */
 
+// contract is in include/string.h
+
+
 #include <string.h>
 #include <stdint.h>
 

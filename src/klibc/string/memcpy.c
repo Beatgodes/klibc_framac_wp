@@ -2,6 +2,7 @@
  * memcpy.c
  * frama-c -wp -wp-rte memcpy.c
  */
+// contract is in include/string.h
 
 #include <string.h>
 #include <stdint.h>

@@ -1,4 +1,5 @@
 // frama-c -wp -wp-rte strlen.c
+// contract is in include/string.h
 
 #include <string.h>
 
